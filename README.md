@@ -133,5 +133,6 @@ mkdir -pv ~/test/ && cd ~/test/ && git clone https://github.com/kbelosevic/docke
 cd ~/test/docker && docker build --tag=testing_app:test . && \
 docker swarm init && \
 cd ~/test/docker && docker stack deploy -c docker-compose.yml testapp && \
+sleep 10 && \
 curl http://127.0.0.1 && echo
 ```
