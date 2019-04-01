@@ -28,7 +28,7 @@ sudo usermod -aG docker $USER
 ```
 **3)Clone this repository**
 ```
-mkdir -pv ~/test/ && cd ~/test/ && git clone https://github.com/kbelosevic/docker.git
+mkdir -v ~/test/data && cd ~/test/ && git clone https://github.com/kbelosevic/docker.git
 ```
 **4)Building Docker image**
 ```
@@ -129,7 +129,7 @@ sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/u
 sudo apt-get update && \
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io && \
 sudo usermod -aG docker $USER && \
-mkdir -pv ~/test/ && cd ~/test/ && git clone https://github.com/kbelosevic/docker.git && \
+mkdir -pv ~/test/data && cd ~/test/ && git clone https://github.com/kbelosevic/docker.git && \
 cd ~/test/docker && docker build --tag=testing_app:test . && \
 docker swarm init && \
 cd ~/test/docker && docker stack deploy -c docker-compose.yml testapp && \
