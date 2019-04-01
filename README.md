@@ -1,17 +1,17 @@
 # Simple dockerized python application and Redis
 
 With next instructions we will:
-1)Build python docker image to run simple python app
-2)Create python application which will run simple HTTP request counter.
-3)Run dockerized Redis
-4)Trough use of Docker Swarm we will scale up our Python application
+1) Build python docker image to run simple python app
+2) Create python application which will run simple HTTP request counter.
+3) Run dockerized Redis
+4) Trough use of Docker Swarm we will scale up our Python application
 
-**Requirements
+**Requirements**
 Linux (deb/rpm based)
 
 ## Installation steps
 
-**1)Installing docker on Ubuntu by following instrcutions from [official Docker website](https://docs.docker.com/install/linux/docker-ce/ubuntu/) or quick and "dirty way":
+**1)Installing docker on Ubuntu by following instrcutions from [official Docker website](https://docs.docker.com/install/linux/docker-ce/ubuntu/) or quick and "dirty way":**
 ```
 sudo apt-get -y remove docker docker-engine docker.io containerd runc && \
 sudo apt-get update && \
@@ -22,24 +22,24 @@ sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/u
 sudo apt-get update && \
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 ```
-**2)Let's make it easy to use docker commands without typing sudo everytime
+**2)Let's make it easy to use docker commands without typing sudo everytime**
 ```
 sudo usermod -aG docker $USER
 ```
-**3)Clone this repository
+**3)Clone this repository**
 ```
 mkdir -pv ~/test/ && cd ~/test/ && git clone https://github.com/kbelosevic/docker.git
 ```
-**4)Building Docker image
+**4)Building Docker image**
 ```
 cd ~/test/ && docker build --tag=testing_app:test .
 ```
-**5)Let's veryify that image is there:
+**5)Let's veryify that image is there:**
 ```
 docker images |grep testing_app
 testing_app               test                825f5d26be99        4 hours ago         131MB
 ```
-**6)Initialize swarm
+**6)Initialize swarm**
 ```
 docker swarm init
 Swarm initialized: current node (m2deayreefe8zgrnk3ioi9zwj) is now a manager.
@@ -50,7 +50,7 @@ To add a worker to this swarm, run the following command:
 
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
-**7)Let's deploy out application
+**7)Let's deploy out application**
 ```
 cd ~/test/ && docker stack deploy -c docker-compose.yml testapp
 Ignoring unsupported options: build
@@ -59,7 +59,7 @@ Creating network testapp_webnet
 Creating service testapp_web
 Creating service testapp_redis
 ```
-**8)Test if everything is ok
+**8)Test if everything is ok**
 ```
 docker service ls
 ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
@@ -87,26 +87,30 @@ curl http://127.0.0.1
 ```
 
 ## Stress testing the application
-**1)Creating SSH forwarding
+**1)Creating SSH forwarding**
+
 We will forward our local port 45667 to servers port 80, so that when we visit 127.0.0.1:45667 it will actually show "localhost of remote server on port 80 127.0.0.1:80"
 ```
 ssh -N -L 45667:127.0.0.1:80 zadatak@62.138.6.28 -p 47522
 ```
-**2)Starting first ab test when we have 1 service (replicas: 1) in docker-compose.yml
+**2)Starting first ab test on our local machine when we have 1 service defined (replicas: 1) in docker-compose.yml**
 ```
 ab -k -c 200 -n 2000 http://127.0.0.1:45667/
 ```
-**3)Starting second ab test when we have 10 services (replicas: 10) in docker-compose.yml - requires redeploy of our application first by using 
+**3)Starting second ab test on our local machine when we have 10 services defined (replicas: 10) in docker-compose.yml - requires redeploy of our application first by using**
+
 On server:
 ```
 cd ~/test/ && docker stack deploy -c docker-compose.yml testapp
 ```
+
 Locally:
 ```
 ab -k -c 200 -n 2000 http://127.0.0.1:45667/
 ```
 Then we compare the tests.
-**4)Simultaneosly of our tests we can also record HTTP traffic by using
+
+**4)Simultaneosly of our tests we can also record HTTP traffic by using tcpdump on the server**
 ```
 sudo tcpdump -nnvvSA port 80 -w captured_http_traffic.pcap
 ```
@@ -114,7 +118,7 @@ Reading it:
 ```
 sudo tcpdump -nnvvSA -r captured_http_traffic.pcap
 ```
-## Dirty one liner
+### Dirty one liner for initial docker install/setup and app deploy
 ```
 sudo apt-get -y remove docker docker-engine docker.io containerd runc && \
 sudo apt-get update && \
