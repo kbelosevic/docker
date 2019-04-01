@@ -32,7 +32,7 @@ mkdir -pv ~/test/ && cd ~/test/ && git clone https://github.com/kbelosevic/docke
 ```
 **4)Building Docker image**
 ```
-cd ~/test/ && docker build --tag=testing_app:test .
+cd ~/test/docker && docker build --tag=testing_app:test .
 ```
 **5)Let's veryify that image is there:**
 ```
@@ -52,7 +52,7 @@ To add a manager to this swarm, run 'docker swarm join-token manager' and follow
 ```
 **7)Let's deploy out application**
 ```
-cd ~/test/ && docker stack deploy -c docker-compose.yml testapp
+cd ~/test/docker && docker stack deploy -c docker-compose.yml testapp
 Ignoring unsupported options: build
 
 Creating network testapp_webnet
@@ -101,7 +101,7 @@ ab -k -c 200 -n 2000 http://127.0.0.1:45667/
 
 On server:
 ```
-cd ~/test/ && docker stack deploy -c docker-compose.yml testapp
+cd ~/test/docker && docker stack deploy -c docker-compose.yml testapp
 ```
 
 Locally:
@@ -130,8 +130,8 @@ sudo apt-get update && \
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io && \
 sudo usermod -aG docker $USER && \
 mkdir -pv ~/test/ && cd ~/test/ && git clone https://github.com/kbelosevic/docker.git && \
-cd ~/test/ && docker build --tag=testing_app:test . && \
+cd ~/test/docker && docker build --tag=testing_app:test . && \
 docker swarm init && \
-cd ~/test/ && docker stack deploy -c docker-compose.yml testapp && \
+cd ~/test/docker && docker stack deploy -c docker-compose.yml testapp && \
 curl http://127.0.0.1 && echo
 ```
